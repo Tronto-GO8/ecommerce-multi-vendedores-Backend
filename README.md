@@ -19,11 +19,97 @@ Tecnologias usadas:
 
 
 Como rodar localmente:
-## backend
+## Backend
+### Como executar local:
+### README: Aplicação Ecommerce com Docker Compose
+
+Este documento descreve como configurar e executar a aplicação Spring Boot e o banco de dados MySQL usando Docker Compose.
+
+-----
+
+#### Pré-requisitos
+
+Para executar a aplicação, você precisa ter as seguintes ferramentas instaladas na sua máquina:
+
+* **Docker & Docker Compose:** Versão mais recente instalada e em execução.
+* **Java JDK:** Versão 21 ou superior para compilar o projeto.
+* **Maven:** Para construir o arquivo `.jar` da aplicação.
+* **Arquivo `.env`**: Um arquivo chamado `.env` deve ser criado no mesmo diretório do `docker-compose.yml` com as credenciais do banco de dados.
+
+**Estrutura do Projeto:**
+Seu projeto deve ter a seguinte estrutura básica:
+
+```
+.
+├── docker-compose.yml
+├── .env
+├── pom.xml
+├── Dockerfile
+├── target/
+│   └── api-0.0.1-SNAPSHOT.jar
+└── db-init-scripts/
+    └── init.sql (ou qualquer outro script de inicialização)
+```
+
+-----
+
+#### Como Executar
+
+Siga os passos abaixo para iniciar a aplicação e o banco de dados.
+
+1.  **Crie o arquivo `.env`**
+
+    No mesmo diretório do `docker-compose.yml`, crie um arquivo chamado `.env` e adicione as seguintes variáveis, substituindo `sua_senha_secreta` pelo valor correto:
+
+    ```bash
+    DB_NAME=dbname
+    DATASOURCE_USERNAME=root
+    DATASOURCE_PASSWORD=sua_senha_secreta
+    ```
+
+    **Observação:** É uma boa prática adicionar `.env` ao seu arquivo `.gitignore` para evitar que suas credenciais sejam versionadas.
+
+2.  **Construa a Aplicação Java**
+
+    Navegue até a pasta raiz do seu projeto e compile a aplicação Spring Boot para gerar o arquivo `.jar`.
+
+    ```bash
+    mvn clean package
+    ```
+
+3.  **Inicie os Serviços com Docker Compose**
+
+    No mesmo diretório, inicie os containers com o seguinte comando:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    * O `docker-compose` lerá o arquivo `docker-compose.yml`.
+    * Ele construirá a imagem do serviço `java` (se ainda não existir) e a iniciará.
+    * Ele iniciará o container do `db`, que fará uma verificação de saúde (`healthcheck`) para garantir que o banco de dados está pronto antes de iniciar a aplicação.
+    * A aplicação Spring Boot iniciará em seguida e se conectará ao banco de dados com as credenciais do arquivo `.env`.
+
+-----
+
+#### Como Testar a Aplicação
+
+Uma vez que o `docker-compose up` for concluído e os logs pararem de mostrar erros, a aplicação estará em execução.
+
+**Teste o Endpoint `https://localhost:8080/hello`**
+
+O seu arquivo `docker-compose.yml` mapeia a porta **8080** para a comunicação **HTTP**. Se a sua aplicação Spring Security exige HTTPS, será necessário um certificado. No entanto, para fins de teste local, a URL correta para o endpoint de exemplo é:
+
+```bash
+curl http://localhost:8080/hello
+```
+
+Se a sua aplicação responder com sucesso, significa que a configuração está correta e a comunicação com o banco de dados está funcionando.
 
 
 
 ### Getting started
+
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
