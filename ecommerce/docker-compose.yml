@@ -12,12 +12,16 @@ services:
       - "8080:8080"
     environment:
 #      SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${DB_NAME}
-      SPRING_DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_SECRET_JWT: ${SPRING_SECRET_JWT}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_ID_CLIENT: ${GOOGLE_ID_CLIENT}
+
     depends_on:
       db:
-        condition: service_healthy # Espera o db estar saudável
+        condition: service_healthy # Espera o db SUBIR
 
   db:
     image: mysql:8.0.43-debian
@@ -25,8 +29,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DATASOURCE_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      MYSQL_DATABASE: ecommerce_db
     command: [
            '--default-authentication-plugin=mysql_native_password',
            '--lower-case-table-names=1'
