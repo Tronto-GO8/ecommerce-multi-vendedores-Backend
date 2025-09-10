@@ -2,14 +2,12 @@ package codifica.ecommerce.api.user;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "User") // Define que esta classe é uma entidade JPA
 @Table(name = "users") // Mapeia para a tabela "users" no banco de dados
 @Getter // Lombok: gera os getters para todos os campos
+@Setter
 @NoArgsConstructor // Lombok: gera um construtor sem argumentos (requerido pelo JPA)
 @AllArgsConstructor // Lombok: gera um construtor com todos os argumentos
 @EqualsAndHashCode(of = "id") // Lombok: gera equals() e hashCode() baseados apenas no ID
